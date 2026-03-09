@@ -17,7 +17,6 @@ export default function ArtistListSection({
     setIsSearching(true);
 
     try {
-      // 空なら全表示、文字があれば部分一致（後ほどAPI側も修正しましょう）
       const url = searchQuery.trim()
         ? `https://music-xlgv.onrender.com/artists?name=${encodeURIComponent(
             searchQuery
@@ -26,9 +25,22 @@ export default function ArtistListSection({
 
       const res = await fetch(url);
       const data = await res.json();
-      setArtists(data);
+
+      // 🔍 デバッグ用ログ：検索した時にブラウザの「検証 > コンソール」に表示されます
+      console.log("取得したデータ:", data);
+
+      // ✅ データの形が配列（[ ]）であることを確認してセットする（ガードレール）
+      if (Array.isArray(data)) {
+        setArtists(data);
+      } else if (data && typeof data === "object") {
+        // 万が一単一のオブジェクトで返ってきた場合の処理
+        setArtists([data]);
+      } else {
+        setArtists([]);
+      }
     } catch (error) {
       console.error("検索エラー:", error);
+      setArtists([]);
     } finally {
       setIsSearching(false);
     }
