@@ -39,6 +39,7 @@ export default async function Home() {
         <h2 className="text-xs text-gray-500 mb-4 border-b border-gray-200 pb-2 tracking-widest uppercase">
           登録アーティスト一覧
         </h2>
+
         <ul className="space-y-4 text-gray-700">
           {artists.length === 0 ? (
             <li className="text-gray-400 text-sm">
@@ -46,15 +47,32 @@ export default async function Home() {
             </li>
           ) : (
             artists.map((artist: any) => (
-              <li
+              <Link
+                href={`/artist/${artist.id}`}
                 key={artist.id}
-                className="cursor-pointer hover:text-black transition-colors flex items-center"
+                className="block"
               >
-                <span className="mr-3 text-gray-400">・</span>
-                <Link href={`/artist/${artist.id}`} className="hover:underline">
-                  {artist.name}
-                </Link>
-              </li>
+                <div className="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm transition-all duration-200 active:scale-95 active:bg-gray-100 hover:shadow-md">
+                  <span className="font-medium text-gray-800">
+                    {artist.name}
+                  </span>
+
+                  {/* 右矢印（＞）のアイコン */}
+                  <svg
+                    className="w-5 h-5 text-gray-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </div>
+              </Link>
             ))
           )}
         </ul>
